@@ -1,4 +1,4 @@
-const Simpson = ({
+export const Simpson = ({
   character,
   characterDirection,
   image,
@@ -9,15 +9,7 @@ const Simpson = ({
 }) => {
   return (
     <div className="character" key={character}>
-      <h1
-        className="characterName"
-        style={{
-          textAlign: "center",
-          backgroundColor: "#efcba4",
-        }}
-      >
-        {character.toUpperCase()}
-      </h1>
+      <h1 className="characterName">{character.toUpperCase()}</h1>
       {/* <button
         style={{ backgroundColor: "#f5f580" }}
         onClick={() => onDeleteCharacter(quote)}

@@ -1,12 +1,10 @@
-import React from "react";
-const Controls = (
+// import React from "react";
+export const Controls = ({
   onTextInput,
   onSortSelect,
   onDeleteCharacter,
   onLikeCharacter,
-  liked,
-  quote
-) => {
+}) => {
   return (
     <>
       <div className="search">
@@ -43,20 +41,8 @@ const Controls = (
           <option value="Z-A">Character: Z-A</option>
         </select>
       </div>
-      <button
-      // style={{ backgroundColor: "#f5f580" }}
-      // onClick={() => onDeleteCharacter(quote)}
-      >
-        delete
-      </button>
-      <button
-      // style={{
-      //   backgroundColor: liked ? "#f66e85" : "#f5f580",
-      // }}
-      // onClick={() => onLikeCharacter(quote)}
-      >
-        like
-      </button>
+      <button onClick={onDeleteCharacter}>delete</button>
+      <button onClick={onLikeCharacter}>like</button>
     </>
   );
 };

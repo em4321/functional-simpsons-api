@@ -1,32 +1,41 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import Simpson from "./components/Simpson";
 import Controls from "./components/Controls";
 
 const App = () => {
-  const [simpsons, setApi] = useState();
+  const [simpsons, setSimpsons] = useState();
   const [text, setText] = useState("");
-  const [select, setSort] = useState("");
-  // const [deleteBtn, setDelete] = useState();
-  // const [likeBtn, setLike] = useState();
+  const [sortSelect, setSortSelect] = useState("");
+  const [deleteBtn, setDelete] = useState();
+  const [likeBtn, setLike] = useState();
 
-  const getData = async () => {
+  const getData = useCallback(async () => {
     const { data } = await axios.get(
       `https://thesimpsonsquoteapi.glitch.me/quotes?count=50`
     );
-    setApi(data);
-  };
+
+    setSimpsons(data);
+  }, []);
+
+  // const getData = async () => {
+  //   const { data } = await axios.get(
+  //     `https://thesimpsonsquoteapi.glitch.me/quotes?count=50`
+  //   );
+  //   setSimpsons(data);
+  // };
+
   useEffect(() => {
     getData();
-  }, []);
+  }, [getData]);
 
   const onTextInput = (e) => {
     setText(e.target.value);
   };
-
+  console.log(text);
   const onSortSelect = (e) => {
-    setSort(e.target.value);
+    setSortSelect(e.target.value);
   };
 
   if (!simpsons) {
@@ -46,42 +55,32 @@ const App = () => {
     return 0;
   });
 
-  if (select === "Z-A") {
+  if (sortSelect === "Z-A") {
     filtered.reverse();
   }
 
-  // const onDeleteCharacter = (quote) => {
-  //   const simpsons = [simpsons];
-  //   const index = simpsons.findIndex((simpson) => simpson.quote === quote);
-  //   simpsons.splice(index, 1);
-  //   setDelete({ simpsons });
-  // };
-  // const onLikeCharacter = (quote) => {
-  //   const simpsons = [simpsons];
-  //   const index = simpsons.findIndex((simpson) => simpson.quote === quote);
-  //   simpsons[index].liked = !simpsons[index].liked;
-  //   setLike({ simpsons });
-  // };
+  const onDeleteCharacter = (quote) => {
+    const index = simpsons.findIndex((simpson) => simpson.quote === quote);
+    simpsons.splice(index, 1);
+    setDelete({ simpsons });
+  };
+  const onLikeCharacter = (quote) => {
+    const index = simpsons.findIndex((simpson) => simpson.quote === quote);
+    simpsons[index] = !simpsons[index];
+    setLike({ simpsons });
+  };
 
-  console.log(simpsons, text);
+  console.log(text, simpsons, deleteBtn, likeBtn);
   return (
     <>
       <Controls
         onTextInput={onTextInput}
         onSortSelect={onSortSelect}
-        // onDeleteCharacter={onDeleteCharacter}
-        // onLikeCharacter={onLikeCharacter}
+        onDeleteCharacter={onDeleteCharacter}
+        onLikeCharacter={onLikeCharacter}
       />
       {filtered.map((simpson, index) => {
-        return (
-          <Simpson
-            key={index}
-            {...simpson}
-            // onDeleteCharacter={onDeleteCharacter}
-            // onLikeCharacter={onLikeCharacter}
-            // index={index}
-          />
-        );
+        return <Simpson key={index} {...simpson} index={index} />;
       })}
     </>
   );
