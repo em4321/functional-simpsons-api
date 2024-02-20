@@ -1,10 +1,4 @@
-// import React from "react";
-export const Controls = ({
-  onTextInput,
-  onSortSelect,
-  onDeleteCharacter,
-  onLikeCharacter,
-}) => {
+const Controls = ({ onTextInput, onSortSelect }) => {
   return (
     <>
       <div className="search">
@@ -13,7 +7,7 @@ export const Controls = ({
           id="search"
           name="search"
           placeholder="Search Simpsons character..."
-          onInput={onTextInput.onTextInput}
+          onInput={onTextInput}
           style={{
             borderRadius: "25px",
             textAlign: "center",
@@ -25,7 +19,7 @@ export const Controls = ({
       </div>
       <div className="sortSelect">
         <select
-          onChange={onSortSelect.onSortSelect}
+          onChange={onSortSelect}
           style={{
             backgroundColor: "#efcba4",
             borderRadius: "25px",
@@ -41,8 +35,6 @@ export const Controls = ({
           <option value="Z-A">Character: Z-A</option>
         </select>
       </div>
-      <button onClick={onDeleteCharacter}>delete</button>
-      <button onClick={onLikeCharacter}>like</button>
     </>
   );
 };

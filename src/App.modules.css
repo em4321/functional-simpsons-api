@@ -1,0 +1,96 @@
+* {
+  background-color: #f5f580;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+.character {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: #efcba4;
+  margin: 5%;
+  padding: 5%;
+  border-radius: 25px;
+  border: 1px solid white;
+}
+
+img,
+h3 {
+  background-color: #efcba4;
+}
+h1,
+p {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.Right {
+  order: 5;
+}
+
+.search {
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+  padding: 20px;
+}
+.controls {
+  display: flex;
+  justify-content: center;
+}
+
+button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 25px;
+  text-align: center;
+  width: 75px;
+  height: 40px;
+  margin: 12px;
+  border: 1px solid white;
+  cursor: pointer;
+}
+
+.trash:hover,
+.thumbsUp:hover {
+  color: #f66e85;
+  cursor: pointer;
+  opacity: 60%;
+}
+
+.nameAndButtons {
+  background-color: #efcba4;
+  display: flex;
+  flex-direction: column;
+}
+img {
+  width: 15vw;
+}
+.characterName,
+h3 {
+  color: white;
+  margin-right: 5px;
+}
+@media screen and (min-width: 150px) {
+  .character,
+  .characterName,
+  h3 {
+    width: 80%;
+    font-size: 80%;
+    text-align: center;
+  }
+}
+
+@media screen and (min-width: 500px) {
+  h1 {
+    font-size: 20px;
+  }
+}
+
+@media screen and (min-width: 700px) {
+  h3,
+  .characterName {
+    font-size: 20px;
+  }
+}

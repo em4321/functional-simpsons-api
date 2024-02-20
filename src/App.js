@@ -3,6 +3,8 @@ import { useEffect } from "react";
 import axios from "axios";
 import Simpson from "./components/Simpson";
 import Controls from "./components/Controls";
+import "./App.modules.css";
+import Spinner from "./components/Spinner";
 
 const App = () => {
   const [simpsons, setSimpsons] = useState();
@@ -10,6 +12,7 @@ const App = () => {
   const [sortSelect, setSortSelect] = useState("");
   const [deleteBtn, setDelete] = useState();
   const [likeBtn, setLike] = useState();
+  // const [total, setTotal] = useState(0);
 
   const getData = useCallback(async () => {
     const { data } = await axios.get(
@@ -30,18 +33,31 @@ const App = () => {
     getData();
   }, [getData]);
 
+  console.log(simpsons);
+
   const onTextInput = (e) => {
     setText(e.target.value);
   };
-  console.log(text);
+
   const onSortSelect = (e) => {
     setSortSelect(e.target.value);
   };
 
   if (!simpsons) {
-    return <h1>Loading Quotes...</h1>;
+    return (
+      <div
+        className="loading"
+        style={{
+          marginTop: "300px",
+        }}
+      >
+        <h1>Loading Quotes...</h1>
+        <Spinner />
+      </div>
+    );
   }
-  const filtered = simpsons.filter((simpson) => {
+  let filtered = [...simpsons];
+  filtered = filtered.filter((simpson) => {
     return simpson.character.toLowerCase().includes(text.toLowerCase());
   });
 
@@ -66,21 +82,30 @@ const App = () => {
   };
   const onLikeCharacter = (quote) => {
     const index = simpsons.findIndex((simpson) => simpson.quote === quote);
-    simpsons[index] = !simpsons[index];
+    simpsons[index].liked = !simpsons[index].liked;
     setLike({ simpsons });
   };
-
-  console.log(text, simpsons, deleteBtn, likeBtn);
+  let totalLiked = 0;
+  simpsons.forEach((simpson) => {
+    if (simpson.liked) {
+      totalLiked++;
+    }
+  });
   return (
     <>
-      <Controls
-        onTextInput={onTextInput}
-        onSortSelect={onSortSelect}
-        onDeleteCharacter={onDeleteCharacter}
-        onLikeCharacter={onLikeCharacter}
-      />
+      <Controls onTextInput={onTextInput} onSortSelect={onSortSelect} />
+      <p>Liked out of {simpsons.length} Characters</p>
       {filtered.map((simpson, index) => {
-        return <Simpson key={index} {...simpson} index={index} />;
+        return (
+          <Simpson
+            simpsons={filtered}
+            key={index}
+            {...simpson}
+            index={index}
+            onDeleteCharacter={onDeleteCharacter}
+            onLikeCharacter={onLikeCharacter}
+          />
+        );
       })}
     </>
   );
