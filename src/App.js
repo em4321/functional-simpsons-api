@@ -94,7 +94,9 @@ const App = () => {
   return (
     <>
       <Controls onTextInput={onTextInput} onSortSelect={onSortSelect} />
-      <p>Liked out of {simpsons.length} Characters</p>
+      <p>
+        {totalLiked} liked out of {simpsons.length} Characters
+      </p>
       {filtered.map((simpson, index) => {
         return (
           <Simpson
