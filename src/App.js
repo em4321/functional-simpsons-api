@@ -1,10 +1,12 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useReducer, useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import Simpson from "./components/Simpson";
 import Controls from "./components/Controls";
 import "./App.modules.css";
 import Spinner from "./components/Spinner";
+import Buttons from "./components/Buttons";
+import { reducer, initialState } from "./components/appReducer";
 
 const App = () => {
   const [simpsons, setSimpsons] = useState();
@@ -12,7 +14,7 @@ const App = () => {
   const [sortSelect, setSortSelect] = useState("");
   const [deleteBtn, setDelete] = useState();
   const [likeBtn, setLike] = useState();
-  // const [total, setTotal] = useState(0);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const getData = useCallback(async () => {
     const { data } = await axios.get(
@@ -85,18 +87,22 @@ const App = () => {
     simpsons[index].liked = !simpsons[index].liked;
     setLike({ simpsons });
   };
+
   let totalLiked = 0;
   simpsons.forEach((simpson) => {
     if (simpson.liked) {
       totalLiked++;
     }
   });
+
   return (
     <>
       <Controls onTextInput={onTextInput} onSortSelect={onSortSelect} />
       <p>
         {totalLiked} liked out of {simpsons.length} Characters
       </p>
+
+      <Buttons state={state} dispatch={dispatch} />
       {filtered.map((simpson, index) => {
         return (
           <Simpson

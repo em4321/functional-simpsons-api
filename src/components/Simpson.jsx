@@ -1,3 +1,5 @@
+import Image from "./Image";
+
 const Simpson = ({
   character,
   characterDirection,
@@ -26,7 +28,7 @@ const Simpson = ({
         >
           like
         </button>
-        <img className={characterDirection} src={image} alt={character} />
+        <Image className={characterDirection} src={image} alt={character} />
 
         <h3>..."{quote}"</h3>
       </div>
