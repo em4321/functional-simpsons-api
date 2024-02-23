@@ -5,37 +5,25 @@ import Simpson from "./components/Simpson";
 import Controls from "./components/Controls";
 import "./App.modules.css";
 import Spinner from "./components/Spinner";
-import Buttons from "./components/Buttons";
+
 import { reducer, initialState } from "./components/appReducer";
 
 const App = () => {
-  const [simpsons, setSimpsons] = useState();
   const [text, setText] = useState("");
   const [sortSelect, setSortSelect] = useState("");
-  const [deleteBtn, setDelete] = useState();
-  const [likeBtn, setLike] = useState();
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [simpsons, dispatch] = useReducer(reducer, initialState);
 
   const getData = useCallback(async () => {
     const { data } = await axios.get(
       `https://thesimpsonsquoteapi.glitch.me/quotes?count=50`
     );
 
-    setSimpsons(data);
+    dispatch({ type: "STORE_API_DATA", payload: data });
   }, []);
-
-  // const getData = async () => {
-  //   const { data } = await axios.get(
-  //     `https://thesimpsonsquoteapi.glitch.me/quotes?count=50`
-  //   );
-  //   setSimpsons(data);
-  // };
 
   useEffect(() => {
     getData();
   }, [getData]);
-
-  console.log(simpsons);
 
   const onTextInput = (e) => {
     setText(e.target.value);
@@ -45,7 +33,7 @@ const App = () => {
     setSortSelect(e.target.value);
   };
 
-  if (!simpsons) {
+  if (!simpsons.apiData) {
     return (
       <div
         className="loading"
@@ -58,7 +46,7 @@ const App = () => {
       </div>
     );
   }
-  let filtered = [...simpsons];
+  let filtered = [...simpsons.apiData];
   filtered = filtered.filter((simpson) => {
     return simpson.character.toLowerCase().includes(text.toLowerCase());
   });
@@ -78,18 +66,14 @@ const App = () => {
   }
 
   const onDeleteCharacter = (quote) => {
-    const index = simpsons.findIndex((simpson) => simpson.quote === quote);
-    simpsons.splice(index, 1);
-    setDelete({ simpsons });
+    dispatch({ type: "ON_DELETE", payload: quote });
   };
   const onLikeCharacter = (quote) => {
-    const index = simpsons.findIndex((simpson) => simpson.quote === quote);
-    simpsons[index].liked = !simpsons[index].liked;
-    setLike({ simpsons });
+    dispatch({ type: "ON_LIKE_TOGGLE", payload: quote });
   };
 
   let totalLiked = 0;
-  simpsons.forEach((simpson) => {
+  simpsons.apiData.forEach((simpson) => {
     if (simpson.liked) {
       totalLiked++;
     }
@@ -99,10 +83,9 @@ const App = () => {
     <>
       <Controls onTextInput={onTextInput} onSortSelect={onSortSelect} />
       <p>
-        {totalLiked} liked out of {simpsons.length} Characters
+        {totalLiked} liked out of {simpsons.apiData.length} Characters
       </p>
 
-      <Buttons state={state} dispatch={dispatch} />
       {filtered.map((simpson, index) => {
         return (
           <Simpson

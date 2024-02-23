@@ -34,7 +34,8 @@ p {
   margin: 10px;
   padding: 20px;
 }
-.controls {
+.search,
+.sortSelect {
   display: flex;
   justify-content: center;
 }
@@ -52,8 +53,8 @@ button {
   cursor: pointer;
 }
 
-.trash:hover,
-.thumbsUp:hover {
+.delete:hover,
+.like:hover {
   color: #f66e85;
   cursor: pointer;
   opacity: 60%;

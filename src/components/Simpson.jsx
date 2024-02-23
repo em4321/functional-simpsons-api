@@ -1,4 +1,4 @@
-import Image from "./Image";
+// import Image from "./Image";
 
 const Simpson = ({
   character,
@@ -9,26 +9,40 @@ const Simpson = ({
   onLikeCharacter,
   liked,
 }) => {
+  console.log(liked);
   return (
     <>
       <div className="character" key={character}>
-        <h1 className="characterName">{character.toUpperCase()}</h1>
+        <div className="nameAndButtons">
+          <h1
+            className="characterName"
+            style={{
+              textAlign: "center",
+              backgroundColor: "#efcba4",
+            }}
+          >
+            {character.toUpperCase()}
+          </h1>
 
-        <button
-          style={{ backgroundColor: "#f5f580" }}
-          onClick={() => onDeleteCharacter(quote)}
-        >
-          delete
-        </button>
-        <button
-          style={{
-            backgroundColor: liked ? "#f66e85" : "#f5f580",
-          }}
-          onClick={() => onLikeCharacter(quote)}
-        >
-          like
-        </button>
-        <Image className={characterDirection} src={image} alt={character} />
+          <button
+            className="delete"
+            style={{ backgroundColor: "#f5f580" }}
+            onClick={() => onDeleteCharacter(quote)}
+          >
+            delete
+          </button>
+          <button
+            className="like"
+            style={{
+              backgroundColor: liked ? "#f66e85" : "#f5f580",
+            }}
+            onClick={() => onLikeCharacter(quote)}
+          >
+            like
+          </button>
+        </div>
+        {/* <Image */}
+        <img className={characterDirection} src={image} alt={character} />
 
         <h3>..."{quote}"</h3>
       </div>
